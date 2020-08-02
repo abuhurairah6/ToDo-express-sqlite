@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const db = require('./Database');
 
+router.use(function(req, res, next) {
+	// res.setHeader('Access-Control-Allow-Origin', '3000');
+	next();
+});
+
 router.get('/', function(req, res){
 	console.log(req.query);
 	
@@ -21,11 +26,14 @@ router.post('/insert', function(req, res){
 
 	let Conn = new db.Database();
 	let sql = 'INSERT INTO USER_NOTE (NOTE_MSG, NOTE_WGT) VALUES (?, ?)';
+	let sql2 = 'SELECT * FROM USER_NOTE ORDER BY NOTE_ID DESC LIMIT 1';
 
 	Conn.dml(sql, function(data) {
-		Conn.close();
-		res.json(data);
-	}, [note_msg, note_wgt]);
+		Conn.read(sql2, function(data2) {
+			Conn.close();
+			res.json(data2);
+		});
+	}, [note_msg, note_wgt])
 });
 
 router.post('/update', function(req, res){
@@ -37,10 +45,13 @@ router.post('/update', function(req, res){
 
 	let Conn = new db.Database();
 	let sql = 'UPDATE USER_NOTE SET NOTE_MSG = ?, NOTE_WGT = ?, NOTE_ACTV = ? WHERE NOTE_ID = ?';
+	let sql2 = 'SELECT * FROM USER_NOTE WHERE NOTE_ID = ?';
 
 	Conn.dml(sql, function(data) {
-		Conn.close();
-		res.json(data);
+		Conn.read(sql2, function(data2) {
+			Conn.close();
+			res.json(data2);
+		}, [note_id]);
 	}, [note_msg, note_wgt, note_actv, note_id]);
 });
 

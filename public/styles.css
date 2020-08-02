@@ -1,3 +1,36 @@
+:root{
+	--trans-seconds: 0.5s;
+	--trans-scale: 1.5;
+}
+
 .custom-input{
-	height: 5em
+	height: 5em;
+}
+
+.custom-hover-icon{
+	transition: var(--trans-seconds);
+	border-style: solid;
+	border-color: white;
+	border-width: 0.1rem;
+}
+
+.custom-hover-icon:hover{
+	transform: scaleX(var(--trans-scale)) scaleY(var(--trans-scale));
+	border-color: #90EE90;
+	cursor: pointer;
+}
+
+.custom-hover-add{
+	height: 3em;
+	transition: height var(--trans-seconds);
+	/*border-style: solid;*/
+	/*border-color: white;*/
+	/*border-width: 0.1rem;*/
+}
+
+.custom-hover-add:hover{
+	/*transform: scaleY(var(--trans-scale));*/
+	height: 5em;
+	border-color: #90EE90;
+	cursor: pointer;
 }

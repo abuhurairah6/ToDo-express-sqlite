@@ -21,27 +21,79 @@
 
   <body class="border">
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <div id="create-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+              <form class="form-inline" id="form-main-new">
+                <div class="form-group">
+                  <textarea id="form-notes-new" name="form_notes_new" class="form-control custom-input" placeholder="<Insert notes here>" required></textarea>
+                </div>
+                <div class="form-group">
+                  <input type="text" id="form-weight-new" name="form_weight_new" class="form-control custom-input" placeholder="<Optional - Weightage>">
+                </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="insertNote()" data-dismiss="modal">Create Note</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="update-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Modal body text goes here.</p>
+              <form class="form-inline" id="form-main-edit">
+                <div class="form-group">
+                  <textarea id="form-notes-edit" name="form_notes_edit" class="form-control custom-input" placeholder="<Insert notes here>" required></textarea>
+                </div>
+                <div class="form-group">
+                  <input type="text" id="form-weight-edit" name="form_weight_edit" class="form-control custom-input" placeholder="<Optional - Weightage>">
+                </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+            <button id="form-submit-edit" type="button" class="btn btn-primary" onclick="updateNote()" data-dismiss="modal">Update Note</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="root">
       <div id="hero-top" class="container border">
         <p>Header</p>
       </div>
+
       <div id="content" class="container border">
-        <!-- <a href=# onclick="reqGET()">
+        <!-- <a href=# onclick="">
           <i class="fas fa-plus-square"></i>
         </a> -->
         <ul class="list-group" id='content-main'>
-          <li class="list-group-item" id="note-add">
-            <form class="form-inline" action="/api/insert" method="post">
-              <div class="form-group">
-                <textarea id="notes" name="form_notes" class="form-control custom-input" placeholder="<Insert notes here>"></textarea>
-              </div>
-              <div class="form-group">
-                <input type="text" id="weight" name="form_weight" class="form-control custom-input" placeholder="<Optional - Weightage>">
-              </div>
-            </form>
+          <li class="list-group-item d-flex justify-content-center align-items-center custom-hover-add" id="note-add" data-toggle="modal" data-target="#create-modal">
+            <i class="fas fa-plus"></i>
           </li>
         </ul>
       </div>
+
       <div id="footer" class="container border">
         <p>Footer</p>
       </div>
@@ -53,10 +105,11 @@
 <!-- Bootstrap include JS -->
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 <script type="text/javascript" src="/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+<script type="text/javascript" src="/js/render.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
 
 <script type="text/javascript" defer>

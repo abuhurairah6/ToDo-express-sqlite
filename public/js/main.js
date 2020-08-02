@@ -1,39 +1,93 @@
 function main() {
-	$.ajax({
-      type: 'GET',
-      url: '/api',
-      success: function(res, status, xhr) {
-        for (let i = 0; i <= res.length - 1; i++) {
-          // console.log(res[i]['NOTE_MSG']);
-          let elem = document.createElement('li');
-          let note = document.createTextNode(res[i]['NOTE_MSG']);
-          
-          elem.className = 'list-group-item';
-          elem.attributes.id = res[i]['NOTE_ID'];
-          elem.attributes.weight = res[i]['NOTE_WGT'];
-          elem.attributes.actv = res[i]['NOTE_ACTV'];
-          elem.appendChild(note);
-          
-          let parent = document.getElementById('note-add');
-          // document.getElementById('content-main').appendChild(elem);
-          document.getElementById('content-main').insertBefore(elem, parent);
-        }
-      },
-      error: function(xhr, status, error){
-        console.log(error);
-      }
-    });
+	queryNote();
+
+	let form_new = document.getElementById('form-main-new');
+	let form_edit = document.getElementById('form-main-edit');
+
+	form_new.addEventListener("submit", function(e) {
+		e.preventDefault();
+	})
+
+	form_edit.addEventListener("submit", function(e) {
+		e.preventDefault();
+	})
 }
 
-function reqGET() {
+function queryNote() {
 	$.ajax({
-		type: 'POST',
-		url: 'api',
-		success: function(res, status, xhr){
-			console.log(res);
+		type: 'GET',
+		url: '/api',
+		success: function(res, status, xhr) {
+			renderElems(res);
 		},
 		error: function(xhr, status, error){
 			console.log(error);
 		}
-	});
-};
+    });
+}
+
+function insertNote() {
+	let form_main = document.getElementById('form-main-new');
+	let form_notes = document.getElementById('form-notes-new').value;
+	let form_weight = document.getElementById('form-weight-new').value;
+	
+	$.ajax({
+		type: 'POST',
+		url: '/api/insert',
+		data: {
+			'form_notes': form_notes,
+			'form_weight': form_weight
+		},
+		success: function(res, status, xhr) {
+			renderElems(res);
+			form_main.reset();
+		},
+		error: function(xhr, status, error){
+			console.log(error);
+		}
+    });
+}
+
+function deleteNote(id) {
+	if (confirm('Are you sure you want to delete?')){
+		let form_id = id.split('-')[2];
+
+		$.ajax({
+			type: 'POST',
+			url: '/api/delete',
+			data: {
+				'form_id': form_id
+			},
+			success: function(res, status, xhr) {
+				deleteElem(id);
+			},
+			error: function(xhr, status, error){
+				console.log(error);
+			}
+	    });
+	}
+}
+
+function updateNote(id) {
+	let form_id = id.split('-')[2];
+	let form_notes = document.getElementById('form-notes-edit').value;
+	let form_weight = document.getElementById('form-weight-edit').value;
+	let form_actv = 'Y';
+	
+	$.ajax({
+		type: 'POST',
+		url: '/api/update',
+		data: {
+			'form_id': form_id,
+			'form_notes': form_notes,
+			'form_weight': form_weight,
+			'form_actv': form_actv
+		},
+		success: function(res, status, xhr) {
+			updateElem(res);
+		},
+		error: function(xhr, status, error){
+			console.log(error);
+		}
+    });
+}
