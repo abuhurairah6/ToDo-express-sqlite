@@ -1,105 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
-  <meta
-  name="description"
-  content="Testing Express Website"
-  />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
-    <title>ToDo</title>
-    <!-- Bootstrap include CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="/styles.css">
-  </head>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+        <meta
+            name="description"
+            content="Testing Express Website"
+        />
+        <!--
+        manifest.json provides metadata used when your web app is installed on a
+        user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+        -->
+        <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+        <title>ToDo</title>
+        <!-- Bootstrap include CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href="/styles.css">
+    </head>
 
-  <body class="border">
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-
-    <div id="create-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Modal body text goes here.</p>
-              <form class="form-inline" id="form-main-new">
-                <div class="form-group">
-                  <textarea id="form-notes-new" name="form_notes_new" class="form-control custom-input" placeholder="<Insert notes here>" required></textarea>
+    <body class="border">
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        
+        <div id="modal-note" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                        
+                    <div class="modal-body">
+                        <p>Modal body text goes here.</p>
+                        <form class="form-inline" id="form-note">
+                            <div class="form-group">
+                                <textarea id="form-note-msg" name="form-note-msg" class="form-control custom-input" placeholder="<Insert notes here>" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="form-note-weight" name="form-note-weight" class="form-control custom-input" placeholder="<Optional - Weightage>">
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button id="form-note-submit" type="button" class="btn btn-primary" onclick="" data-dismiss="modal"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
                 </div>
-                <div class="form-group">
-                  <input type="text" id="form-weight-new" name="form_weight_new" class="form-control custom-input" placeholder="<Optional - Weightage>">
-                </div>
-              </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" onclick="insertNote()" data-dismiss="modal">Create Note</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <div id="update-modal" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Modal body text goes here.</p>
-              <form class="form-inline" id="form-main-edit">
-                <div class="form-group">
-                  <textarea id="form-notes-edit" name="form_notes_edit" class="form-control custom-input" placeholder="<Insert notes here>" required></textarea>
-                </div>
-                <div class="form-group">
-                  <input type="text" id="form-weight-edit" name="form_weight_edit" class="form-control custom-input" placeholder="<Optional - Weightage>">
-                </div>
-              </form>
-          </div>
-          <div class="modal-footer">
-            <button id="form-submit-edit" type="button" class="btn btn-primary" onclick="updateNote()" data-dismiss="modal">Update Note</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          </div>
+        <div id="root">
+            
+            <div id="hero-top" class="container border">
+                <p>Header</p>
+            </div>
+
+            <div id="content" class="container border">
+                <ul class="list-group" id='content-main'>
+                    <li class="list-group-item d-flex justify-content-center align-items-center custom-hover-add" id="note-add" data-toggle="modal" data-target="#modal-note" onclick="Renderer.populateModal('create')">
+                    <i class="fas fa-plus"></i>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="footer" class="container border">
+                <p>Footer</p>
+            </div>
+
         </div>
-      </div>
-    </div>
 
-    <div id="root">
-      <div id="hero-top" class="container border">
-        <p>Header</p>
-      </div>
-
-      <div id="content" class="container border">
-        <!-- <a href=# onclick="">
-          <i class="fas fa-plus-square"></i>
-        </a> -->
-        <ul class="list-group" id='content-main'>
-          <li class="list-group-item d-flex justify-content-center align-items-center custom-hover-add" id="note-add" data-toggle="modal" data-target="#create-modal">
-            <i class="fas fa-plus"></i>
-          </li>
-        </ul>
-      </div>
-
-      <div id="footer" class="container border">
-        <p>Footer</p>
-      </div>
-    </div>
-  </body>
-
+    </body>
 </html>
 
 <!-- Bootstrap include JS -->
@@ -109,13 +83,14 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 <script type="text/javascript" src="/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
-<script type="text/javascript" src="/js/render.js"></script>
+<script type="text/javascript" src="/js/ProcessorClass.js"></script>
+<script type="text/javascript" src="/js/RendererClass.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
 
 <script type="text/javascript" defer>
 
-  $(document).ready(function() {
-    main();
-  });
+    $(document).ready(function() {
+        main();
+    });
 
 </script defer>

@@ -21,7 +21,7 @@ router.get('/', function(req, res){
 
 router.post('/insert', function(req, res){
 	console.log(req.body);
-	let note_msg = req.body['form_notes'];
+	let note_msg = req.body['form_msg'];
 	let note_wgt = req.body['form_weight'] === '' ? 0 : req.body['form_weight'];
 
 	let Conn = new db.Database();
@@ -39,7 +39,7 @@ router.post('/insert', function(req, res){
 router.post('/update', function(req, res){
 	console.log(req.body);
 	let note_id = req.body['form_id'];
-	let note_msg = req.body['form_notes'];
+	let note_msg = req.body['form_msg'];
 	let note_wgt = req.body['form_weight'] === '' ? 0 : req.body['form_weight'];
 	let note_actv = req.body['form_actv'] === '' ? 'Y' : req.body['form_actv'];
 
