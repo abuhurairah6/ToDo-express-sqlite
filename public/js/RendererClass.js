@@ -1,5 +1,6 @@
 class RendererClass {
 	populateModal(mode, id = null) {
+		let form_main = document.getElementById('form-note');
 		let form_msg = document.getElementById('form-note-msg');
 		let form_weight = document.getElementById('form-note-weight');
 		let form_submit = document.getElementById('form-note-submit');
@@ -8,14 +9,14 @@ class RendererClass {
 			form_msg.value = null;
 			form_weight.value = null;
 			form_submit.innerHTML = 'Create Note';
-			form_submit.setAttribute('onclick', 'Processor.createNote()');
+			form_main.action = 'createNote?';
 		} else if (mode == 'update' && id !== null) {
 			let elem = document.getElementById(id);
 
 			form_msg.value = elem.childNodes[0].innerHTML;
 			form_weight.value = elem.attributes.weight;
 			form_submit.innerHTML = 'Update Note';
-			form_submit.setAttribute('onclick', `Processor.updateNote('${id}')`);
+			form_main.action = `updateNote?${id}`;
 		}
 	}
 

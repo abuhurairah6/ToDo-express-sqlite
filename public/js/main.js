@@ -8,9 +8,18 @@ var Renderer = new RendererClass();
 function main() {
 	Processor.queryNote();
 
-	let modal_note = document.getElementById('modal-note');
+	let form_main = document.getElementById('form-note');
 
-	modal_note.addEventListener("submit", function(e) {
+	form_main.addEventListener("submit", function(e) {
+		// To prevent from redirecting to form action's URL
 		e.preventDefault();
+
+		let func = form_main.action;
+		let regex = /(update|create).*/g;
+		let params = regex.exec(func)[0].split('?');
+		
+		// Runs function dynamically base on form's action, only accepts one argument
+		Processor[params[0]](params[1]);
 	});
+
 }

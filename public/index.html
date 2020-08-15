@@ -25,30 +25,31 @@
         <div id="modal-note" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
+                    <form id="form-note">
                     
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                            
+                        <div class="modal-body">
+                            <p>Modal body text goes here.</p>
+                                <div class="form-group">
+                                    <textarea id="form-note-msg" name="form-note-msg" class="form-control custom-input" placeholder="<Insert notes here>" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="form-note-weight" name="form-note-weight" class="form-control custom-input" placeholder="<Optional - Weightage>">
+                                </div>
+                        </div>
                         
-                    <div class="modal-body">
-                        <p>Modal body text goes here.</p>
-                        <form class="form-inline" id="form-note">
-                            <div class="form-group">
-                                <textarea id="form-note-msg" name="form-note-msg" class="form-control custom-input" placeholder="<Insert notes here>" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" id="form-note-weight" name="form-note-weight" class="form-control custom-input" placeholder="<Optional - Weightage>">
-                            </div>
-                        </form>
-                    </div>
-                    
-                    <div class="modal-footer">
-                        <button id="form-note-submit" type="button" class="btn btn-primary" onclick="" data-dismiss="modal"></button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button id="form-note-submit" type="submit" class="btn btn-primary"></button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
