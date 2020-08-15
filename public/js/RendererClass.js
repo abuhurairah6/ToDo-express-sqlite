@@ -25,12 +25,12 @@ class RendererClass {
 		let note = document.createTextNode(json['NOTE_MSG']);
 
 		let divLeft = document.createElement('div');
-		divLeft.className = 'col-11';
+		divLeft.className = 'col-11 d-flex align-items-center';
 
 		let divRight = document.createElement('div');
 		divRight.className = 'col-1 d-flex justify-content-between align-items-center';
 
-		parent.className = 'list-group-item d-flex justify-content-between list-group-item-success';
+		parent.className = 'list-group-item d-flex list-group-item-success custom-element-append';
 		parent.setAttribute('id', 'note-id-' + json['NOTE_ID']);
 		// parent.attributes.id = json['NOTE_ID'];
 		parent.attributes.weight = json['NOTE_WGT'];
@@ -67,7 +67,12 @@ class RendererClass {
 
 	deleteElem(id) {
 		let elem = document.getElementById(id);
-		elem.parentNode.removeChild(elem);
+
+		elem.addEventListener('animationend', function() {
+			elem.parentNode.removeChild(elem);
+		});
+
+		elem.className = elem.className + ' custom-element-remove';
 	}
 
 }

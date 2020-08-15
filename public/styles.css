@@ -1,6 +1,27 @@
 :root{
 	--trans-seconds: 0.5s;
 	--trans-scale: 1.5;
+	--anim-seconds: 1s;
+}
+
+@keyframes append{
+	0%{
+		opacity: 0;
+	}
+}
+
+@keyframes remove{
+	100%{
+		opacity: 0;
+	}
+}
+
+.custom-element-append{
+	animation: append var(--anim-seconds);
+}
+
+.custom-element-remove{
+	animation: remove var(--anim-seconds);
 }
 
 .custom-input{
@@ -9,7 +30,7 @@
 
 .custom-hover-icon{
 	transition: var(--trans-seconds);
-	border-style: solid;
+	/*border-style: solid;*/
 	border-color: white;
 	border-width: 0.1rem;
 }

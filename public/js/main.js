@@ -20,6 +20,6 @@ function main() {
 		
 		// Runs function dynamically base on form's action, only accepts one argument
 		Processor[params[0]](params[1]);
+		$('#modal-note').modal('hide');
 	});
-
 }
