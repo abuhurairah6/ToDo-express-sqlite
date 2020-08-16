@@ -24,11 +24,14 @@ class RendererClass {
 		let parent = document.createElement('li');
 		let note = document.createTextNode(json['NOTE_MSG']);
 
-		let divLeft = document.createElement('div');
-		divLeft.className = 'col-11 d-flex align-items-center';
+		let divLeft = document.createElement('label');
+		divLeft.className = 'd-flex justify-content-between align-items-center m-1';
+
+		let divCenter = document.createElement('div');
+		divCenter.className = 'flex-grow-1 m-1';
 
 		let divRight = document.createElement('div');
-		divRight.className = 'col-1 d-flex justify-content-between align-items-center';
+		divRight.className = 'd-flex justify-content-between align-items-center m-1';
 
 		parent.className = 'list-group-item d-flex list-group-item-success custom-element-append';
 		parent.setAttribute('id', 'note-id-' + json['NOTE_ID']);
@@ -36,8 +39,12 @@ class RendererClass {
 		parent.attributes.weight = json['NOTE_WGT'];
 		parent.attributes.actv = json['NOTE_ACTV'];
 
+		let elemCheck = document.createElement('input');
+		elemCheck.setAttribute('type','checkbox');
+		elemCheck.setAttribute('onclick', `alert('${parent.id}')`);
+
 		let elemEdit = document.createElement('i');
-		elemEdit.className = 'fa fa-edit custom-hover-icon';
+		elemEdit.className = 'fa fa-edit custom-hover-icon m-1';
 		elemEdit.setAttribute('data-toggle', 'modal');
 		elemEdit.setAttribute('data-target','#modal-note');
 		elemEdit.setAttribute('onclick', `Renderer.populateModal('update', '${parent.id}')`);
@@ -46,10 +53,13 @@ class RendererClass {
 		elemDelete.className = 'fa fa-trash custom-hover-icon';
 		elemDelete.setAttribute('onclick', `Processor.deleteNote('${parent.id}')`);
 
-		divLeft.appendChild(note);
+		divLeft.appendChild(elemCheck);
+		divCenter.appendChild(note);
 		divRight.appendChild(elemEdit);
 		divRight.appendChild(elemDelete);
+		
 		parent.appendChild(divLeft);
+		parent.appendChild(divCenter);
 		parent.appendChild(divRight);
 
 		let root = document.getElementById('note-add');
