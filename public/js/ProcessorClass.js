@@ -39,19 +39,19 @@ class ProcessorClass {
 	    });
 	}
 
-	updateNote(id) {
+	updateNote(id, form = true) {
 		let form_id = id.split('-')[2];
-		let form_msg = document.getElementById('form-note-msg');
-		let form_weight = document.getElementById('form-note-weight');
-		let form_actv = 'Y';
+		let form_msg = form ? document.getElementById('form-note-msg').value : document.getElementById(id).attributes.msg;
+		let form_weight = form ? document.getElementById('form-note-weight').value : document.getElementById(id).attributes.weight;
+		let form_actv = form ? 'Y': document.getElementById(id).attributes.actv === 'Y' ? 'N' : 'Y';
 		
 		$.ajax({
 			type: 'POST',
 			url: '/api/update',
 			data: {
 				'form_id': form_id,
-				'form_msg': form_msg.value,
-				'form_weight': form_weight.value,
+				'form_msg': form_msg,
+				'form_weight': form_weight,
 				'form_actv': form_actv
 			},
 			success: function(res, status, xhr) {

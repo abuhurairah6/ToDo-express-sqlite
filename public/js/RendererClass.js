@@ -22,26 +22,27 @@ class RendererClass {
 
 	createElem(json) {
 		let parent = document.createElement('li');
+		let parentClass = 'list-group-item d-flex custom-element-append';
+		parent.setAttribute('id', 'note-id-' + json['NOTE_ID']);
+		// parent.attributes.id = json['NOTE_ID'];
+		parent.attributes.msg = json['NOTE_MSG'];
+		parent.attributes.weight = json['NOTE_WGT'];
+		parent.attributes.actv = json['NOTE_ACTV'];
+		
 		let note = document.createTextNode(json['NOTE_MSG']);
 
 		let divLeft = document.createElement('label');
 		divLeft.className = 'd-flex justify-content-between align-items-center m-1';
 
 		let divCenter = document.createElement('div');
-		divCenter.className = 'flex-grow-1 m-1';
+		let centerClass = 'flex-grow-1 m-1';
 
 		let divRight = document.createElement('div');
 		divRight.className = 'd-flex justify-content-between align-items-center m-1';
 
-		parent.className = 'list-group-item d-flex list-group-item-success custom-element-append';
-		parent.setAttribute('id', 'note-id-' + json['NOTE_ID']);
-		// parent.attributes.id = json['NOTE_ID'];
-		parent.attributes.weight = json['NOTE_WGT'];
-		parent.attributes.actv = json['NOTE_ACTV'];
-
 		let elemCheck = document.createElement('input');
 		elemCheck.setAttribute('type','checkbox');
-		elemCheck.setAttribute('onclick', `alert('${parent.id}')`);
+		elemCheck.setAttribute('onclick', `Processor.updateNote('${parent.id}', false)`);
 
 		let elemEdit = document.createElement('i');
 		elemEdit.className = 'fa fa-edit custom-hover-icon m-1';
@@ -63,15 +64,31 @@ class RendererClass {
 		parent.appendChild(divRight);
 
 		let root = document.getElementById('note-add');
-		// document.getElementById('content-main').appendChild(elem);
-		document.getElementById('content-main').insertBefore(parent, root);
+
+		if (json['NOTE_ACTV'] === 'Y') {
+			parent.className = parentClass + ' list-group-item-primary';
+			divCenter.className = centerClass;
+			document.getElementById('content-main').insertBefore(parent, root);
+		} else {
+			parent.className = parentClass + ' list-group-item-success';
+			divCenter.className = centerClass + ' text-muted';
+			elemCheck.setAttribute('checked', '');
+			document.getElementById('history-main').appendChild(parent);
+		}
 	}
 
 	updateElem(json) {
 		let elem = document.getElementById('note-id-' + json[0]['NOTE_ID']);
 
-		elem.childNodes[0].innerHTML = json[0]['NOTE_MSG'];
+		elem.childNodes[1].innerHTML = json[0]['NOTE_MSG'];
+		elem.attributes.msg = json[0]['NOTE_MSG'];
 		elem.attributes.weight = json[0]['NOTE_WGT'];
+
+		if (elem.attributes.actv != json[0]['NOTE_ACTV']) {
+			this.deleteElem(elem.id);
+			this.createElem(json[0]);
+		}
+		
 		elem.attributes.actv = json[0]['NOTE_ACTV'];
 	}
 

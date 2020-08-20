@@ -1,7 +1,7 @@
 :root{
 	--trans-seconds: 0.5s;
 	--trans-scale: 1.5;
-	--anim-seconds: 1s;
+	--anim-seconds: 0.5s;
 }
 
 @keyframes append{
