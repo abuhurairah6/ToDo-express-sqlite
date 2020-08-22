@@ -1,13 +1,13 @@
 const SQLITE3 = require('sqlite3').verbose();
 
 class Database {
-	constructor() {
+	constructor(path) {
 		// Init database
-		this.db = new SQLITE3.Database('./api/db/ToDo.db', SQLITE3.OPEN_READWRITE, function(err) {
+		this.db = new SQLITE3.Database(path, SQLITE3.OPEN_READWRITE, function(err) {
 			if (err) {
 				console.log(err.message);
 			}else{
-				console.log('Connected to ToDo database.');
+				console.log('Connected to database.');
 			}
 		});
 	}
@@ -17,7 +17,7 @@ class Database {
 			if (err) {
 				console.log(err.message);
 			}else{
-				console.log('Closed ToDo database.');
+				console.log('Closed database.');
 			}
 		});
 	}
