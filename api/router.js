@@ -10,13 +10,14 @@ router.use(function(req, res, next) {
 
 router.get('/', function(req, res){
 	console.log(req.query);
+	console.log(req.body);
 	
 	let Conn = new db.Database(dbPath);
 	let sql = 'SELECT * FROM USER_NOTE';
 
 	Conn.read(sql, function(data) {
 		Conn.close();
-		res.json(data);
+		res.json(data['res']);
 	});
 });
 
@@ -32,7 +33,7 @@ router.post('/insert', function(req, res){
 	Conn.dml(sql, function(data) {
 		Conn.read(sql2, function(data2) {
 			Conn.close();
-			res.json(data2);
+			res.json(data2['res']);
 		});
 	}, [note_msg, note_wgt])
 });
@@ -51,7 +52,7 @@ router.post('/update', function(req, res){
 	Conn.dml(sql, function(data) {
 		Conn.read(sql2, function(data2) {
 			Conn.close();
-			res.json(data2);
+			res.json(data2['res']);
 		}, [note_id]);
 	}, [note_msg, note_wgt, note_actv, note_id]);
 });
@@ -65,7 +66,7 @@ router.post('/delete', function(req, res){
 
 	Conn.dml(sql, function(data) {
 		Conn.close();
-		res.json(data);
+		res.json(data['res']);
 	}, [note_id]);
 });
 

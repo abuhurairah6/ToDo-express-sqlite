@@ -1,1 +1,101 @@
-<p>Hello world</p>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
+        <meta
+            name="description"
+            content="Testing Express Website"
+        />
+        <!--
+        manifest.json provides metadata used when your web app is installed on a
+        user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+        -->
+        <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+        <title>ToDo</title>
+        <!-- Bootstrap include CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <style type="text/css">
+            body{
+                height: 100vh;
+            }
+        </style>
+    </head>
+
+    <body class="d-flex align-items-center justify-content-center">
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+
+        <div id="root" class="d-flex flex-column flex-grow-1">
+            
+            <div class="d-flex justify-content-center">
+                <!-- <i class="fas fa-sticky-note"></i> -->
+                <h1 class="text-center">To-do</h1>
+            </div>
+            
+            <ul class='nav nav-pills justify-content-center'>
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#form-login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#form-register">Register</a>
+                </li>
+            </ul>
+
+
+            <div class="tab-content">
+                <form class="tab-pane fade show active needs-validation" id="form-login" method="post" action="/user/authenticate">
+
+                    <div id="content" class="container border d-flex flex-column align-items-center">
+                        <input id="login-username" name="login-username" class="m-1 form-control" placeholder="Username" required></input>
+                        <div class="invalid-feedback">
+                            Username is already in use!
+                        </div>
+                        <input type="password" id="login-password" name="login-password" class="m-1 form-control" placeholder="Password" pattern=".{8,}" required></input>
+                        <div id="login-invalid" class="invalid-feedback"></div>
+                        <button id="login-submit" type="submit" class="btn btn-primary btn-block m-1">Log In</button>
+                        <!-- <a href="#" class="m-1">Forgot Password</a> -->
+                    </div>
+
+                </form>
+
+                <form class="tab-pane fade needs-validated" id="form-register" method="post" action="/user/register">
+                    
+                    <div id="content" class="container border d-flex flex-column align-items-center">
+                        <input id="register-username" name="register-username" class="m-1 form-control" placeholder="Username" required></input>
+                        <input type="password" id="register-password" name="register-password" class="m-1 form-control" placeholder="Password" pattern=".{8,}" required></input>
+                        <div class="invalid-feedback">
+                            Password length has to be at least 8 characters!
+                        </div>
+                        <input type="password" id="register-password-confirm" name="register-password-confirm" class="m-1 form-control" placeholder="Confirm Password" pattern=".{8,}" required></input>
+                        <div id="password-not-match" class="invalid-feedback">
+                            Password does not match!
+                        </div>
+                        <button id="register-submit" type="submit" class="btn btn-primary btn-block m-1">Sign Up</button>
+                    </div>
+
+                </form>
+                
+            </div>
+
+        </div>
+
+    </body>
+</html>
+
+<!-- Bootstrap include JS -->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+<script type="text/javascript" src="/login/js/main.js"></script>
+
+<script type="text/javascript" defer>
+
+    $(document).ready(function() {
+        main();
+    });
+
+</script defer>

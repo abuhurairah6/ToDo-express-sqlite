@@ -26,12 +26,16 @@ class Database {
 		// Query data using each(), first callback (third argument) appends all rows into variable,
 		// second callback (fourth argument) returns and calls initial callback function after all rows queried.
 
-		var data = [];
+		let data = {
+			res: [],
+			err: []
+		};
+
 		this.db.each(sql, params, function(err, rows) {
 			if (err) {
-				data.push(err);
+				data['err'].push(err);
 			}else {
-				data.push(rows);
+				data['res'].push(rows);
 			}
 		}, function() {
 			callback(data);
@@ -52,12 +56,16 @@ class Database {
 	}
 
 	dml(sql, callback, params = []) {
-		var data = [];
+		let data = {
+			res: [],
+			err: []
+		};
+
 		this.db.run(sql, params, function(err) {
 			if (err) {
-				data.push(err);
+				data['err'].push(err);
 			}else {
-				data.push(200);
+				data['res'].push(200);
 			}
 			callback(data);
 		});
