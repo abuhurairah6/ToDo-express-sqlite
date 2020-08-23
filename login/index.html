@@ -44,34 +44,29 @@
 
 
             <div class="tab-content">
-                <form class="tab-pane fade show active needs-validation" id="form-login" method="post" action="/user/authenticate">
+                <form class="tab-pane fade show active" id="form-login" method="post" action="/user/authenticate">
 
                     <div id="content" class="container border d-flex flex-column align-items-center">
                         <input id="login-username" name="login-username" class="m-1 form-control" placeholder="Username" required></input>
-                        <div class="invalid-feedback">
-                            Username is already in use!
-                        </div>
-                        <input type="password" id="login-password" name="login-password" class="m-1 form-control" placeholder="Password" pattern=".{8,}" required></input>
-                        <div id="login-invalid" class="invalid-feedback"></div>
+                        <input type="password" id="login-password" name="login-password" class="m-1 form-control" placeholder="Password" required></input>
                         <button id="login-submit" type="submit" class="btn btn-primary btn-block m-1">Log In</button>
+                        <div id="login-invalid" class="invalid-feedback"></div>
                         <!-- <a href="#" class="m-1">Forgot Password</a> -->
                     </div>
 
                 </form>
 
-                <form class="tab-pane fade needs-validated" id="form-register" method="post" action="/user/register">
+                <form class="tab-pane fade" id="form-register" method="post" action="/user/register">
                     
                     <div id="content" class="container border d-flex flex-column align-items-center">
                         <input id="register-username" name="register-username" class="m-1 form-control" placeholder="Username" required></input>
                         <input type="password" id="register-password" name="register-password" class="m-1 form-control" placeholder="Password" pattern=".{8,}" required></input>
-                        <div class="invalid-feedback">
-                            Password length has to be at least 8 characters!
-                        </div>
-                        <input type="password" id="register-password-confirm" name="register-password-confirm" class="m-1 form-control" placeholder="Confirm Password" pattern=".{8,}" required></input>
+                        <input type="password" id="register-password-confirm" name="register-password-confirm" class="m-1 form-control" placeholder="Confirm Password" required></input>
                         <div id="password-not-match" class="invalid-feedback">
                             Password does not match!
                         </div>
                         <button id="register-submit" type="submit" class="btn btn-primary btn-block m-1">Sign Up</button>
+                        <div id="register-invalid" class="invalid-feedback"></div>
                     </div>
 
                 </form>
@@ -90,6 +85,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 <script type="text/javascript" src="/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+<script type="text/javascript" src="/login/js/ErrorHandlerClass.js"></script>
 <script type="text/javascript" src="/login/js/main.js"></script>
 
 <script type="text/javascript" defer>

@@ -13,37 +13,43 @@ router.use(function(req, res, next) {
 
 router.post('/register', function(req, res) {
 	console.log(req.body);
-	let user_id = req.body['register-username'];
+	let user_id = req.body['register-username'].toUpperCase();
 	let user_password = req.body['register-password'];
 
 	user_password = bcrypt.hashSync(user_password, SALTROUNDS);
 
 	let Conn = new db.Database(dbPath);
-	let sql = 'INSERT INTO SYS_USER (USER_USERID, USER_PASSWORD) VALUES (?, ?)';
+	let sqlRead = 'SELECT CASE WHEN COUNT(*) != 0 THEN 0 ELSE 1 END AS "RES" FROM SYS_USER WHERE USER_USERID = ?';
+	let sqlInsert = 'INSERT INTO SYS_USER (USER_USERID, USER_PASSWORD) VALUES (?, ?)';
 
-	Conn.dml(sql, function(data) {
-		Conn.close();
-
-		if (data['err'].length == 0) {
-			session.createSession(user_id, function(token) {
-				res.cookie('tdtoken', token);
-				// res.redirect('/');
-				res.json({authenticate: true, status: '01'});
-			});
-		} else {
-			// Throw exception
-			// res.redirect('/login');
-			res.json({authenticate: false, status: '11'});
+	Conn.read(sqlRead, function(data) {
+		if (data['res'][0]['RES'] == 0) {
+			return res.json({authenticate: false, status: '02'});
 		}
 
+		Conn.dml(sqlInsert, function(data) {
+			Conn.close();
 
-	}, [user_id, user_password])
+			if (data['err'].length == 0) {
+				session.createSession(user_id, function(token) {
+					res.cookie('tdtoken', token);
+					// res.redirect('/');
+					return res.json({authenticate: true, status: '01'});
+				});
+			} else {
+				// Throw exception
+				// res.redirect('/login');
+				return res.json({authenticate: false, status: '11'});
+			}
+
+		}, [user_id, user_password])
+	}, [user_id]);
 });
 
 router.post('/authenticate', function(req, res) {
 	console.log(req.body);
 
-	let user_id = req.body['login-username'];
+	let user_id = req.body['login-username'].toUpperCase();
 	let user_password = req.body['login-password'];
 	
 	let Conn = new db.Database(dbPath);
@@ -59,21 +65,21 @@ router.post('/authenticate', function(req, res) {
 				ret = true;
 				status = '01';
 			} else {
-				status = '03';
+				status = '04';
 			}
 		} else {
-			status = '02';
+			status = '03';
 		}
 
 		if (ret) {
 			session.createSession(user_id, function(token) {
 				res.cookie('tdtoken', token);
 				// res.redirect('/');
-				res.json({authenticate: ret, status: status});
+				return res.json({authenticate: ret, status: status});
 			});
 		} else {
 			// res.redirect('/login');
-			res.json({authenticate: ret, status: status});
+			return res.json({authenticate: ret, status: status});
 		}
 		
 

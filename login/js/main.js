@@ -1,3 +1,9 @@
+/*
+	Global objects/helpers init
+*/
+
+var ErrorHandler = new ErrorHandlerClass();
+
 function main() {
 	let form_login = document.getElementById('form-login');
 	let form_register = document.getElementById('form-register');
@@ -6,12 +12,10 @@ function main() {
 
 	form_login.addEventListener("submit", function(e) {
 		e.preventDefault();
+		
 		if (form_login.checkValidity()) {
 			login();
 		}
-
-		// To prevent from redirecting to form action's URL
-		// form_login.classList.add('was-validated');
 	});
 
 	form_register.addEventListener("submit", function(e) {
@@ -24,14 +28,13 @@ function main() {
 			$("#password-not-match").hide();
 			register();
 		}
-
-		// form_register.classList.add('was-validated');
 	});
 }
 
 function register() {
 	let userid = document.getElementById('register-username');
 	let pass = document.getElementById('register-password');
+	let inv = document.getElementById('register-invalid');
 
 	$.ajax({
 		type: 'POST',
@@ -45,11 +48,8 @@ function register() {
 				window.location = window.pathname;
 			} else {
 				// Throw exception
-				switch(res.status) {
-					case '11':
-						// inv.innerHTML = 'Unexpected error, please try again later!';
-						break;
-				}
+				ErrorHandler.processError(res, inv);
+				$("#register-invalid").show();
 			}
 		},
 		error: function(xhr, status, error){
@@ -75,15 +75,7 @@ function login() {
 				window.location = window.pathname;
 			} else {
 				// Throw exception
-				switch(res.status) {
-					case '02':
-						inv.innerHTML = 'User not found!';
-						break;
-					case '03':
-						inv.innerHTML = 'Password is incorrect!';
-						break;
-				}
-
+				ErrorHandler.processError(res, inv);
 				$("#login-invalid").show();
 			}
 		},
