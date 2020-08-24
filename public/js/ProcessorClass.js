@@ -4,9 +4,10 @@ class ProcessorClass {
 			type: 'GET',
 			url: '/api',
 			success: function(res, status, xhr) {
-				for (let i = 0; i <= res.length - 1; i++) {
-					Renderer.createElem(res[i]);
+				for (let i = 0; i <= res['notes'].length - 1; i++) {
+					Renderer.createElem(res['notes'][i]);
 				}
+				Renderer.updateUser(res['user']);
 			},
 			error: function(xhr, status, error){
 				console.log(error);
@@ -81,5 +82,22 @@ class ProcessorClass {
 				}
 		    });
 		}
+	}
+
+	logout() {
+		$.ajax({
+			type: 'POST',
+			url: '/user/logout',
+			success: function(res, status, xhr) {
+				if (res.unauth) {
+					window.location = window.pathname;
+				} else {
+					console.log(res.status);
+				}
+			},
+			error: function(xhr, status, error){
+				console.log(error);
+			}
+	    });
 	}
 }

@@ -9,37 +9,38 @@ router.use(function(req, res, next) {
 });
 
 router.get('/', function(req, res){
-	console.log(req.query);
-	console.log(req.body);
+	let userid = req.body['sess_userid'];
 	
 	let Conn = new db.Database(dbPath);
-	let sql = 'SELECT * FROM USER_NOTE';
+	let sqlNote = 'SELECT NOTE_ID, NOTE_MSG, NOTE_WGT, NOTE_ACTV FROM USER_NOTE WHERE NOTE_USER_ID = ?';
+	let sqlUser = 'SELECT USER_USERID FROM SYS_USER WHERE USER_ID = ?';
 
-	Conn.read(sql, function(data) {
-		Conn.close();
-		res.json(data['res']);
-	});
+	Conn.read(sqlNote, function(data) {
+		Conn.read(sqlUser, function(data2) {
+			Conn.close();
+			res.json({notes: data['res'], user: data2['res'][0]['USER_USERID']});
+		}, [userid]);
+	}, [userid]);
 });
 
 router.post('/insert', function(req, res){
-	console.log(req.body);
 	let note_msg = req.body['form_msg'];
 	let note_wgt = req.body['form_weight'] === '' ? 0 : req.body['form_weight'];
+	let note_user = req.body['sess_userid'];
 
 	let Conn = new db.Database(dbPath);
-	let sql = 'INSERT INTO USER_NOTE (NOTE_MSG, NOTE_WGT) VALUES (?, ?)';
-	let sql2 = 'SELECT * FROM USER_NOTE ORDER BY NOTE_ID DESC LIMIT 1';
+	let sql = 'INSERT INTO USER_NOTE (NOTE_MSG, NOTE_WGT, NOTE_USER_ID) VALUES (?, ?, ?)';
+	let sql2 = 'SELECT * FROM USER_NOTE WHERE NOTE_USER_ID = ? ORDER BY NOTE_ID DESC LIMIT 1';
 
 	Conn.dml(sql, function(data) {
 		Conn.read(sql2, function(data2) {
 			Conn.close();
 			res.json(data2['res']);
-		});
-	}, [note_msg, note_wgt])
+		}, [note_user]);
+	}, [note_msg, note_wgt, note_user])
 });
 
 router.post('/update', function(req, res){
-	console.log(req.body);
 	let note_id = req.body['form_id'];
 	let note_msg = req.body['form_msg'];
 	let note_wgt = req.body['form_weight'] === '' ? 0 : req.body['form_weight'];
@@ -58,7 +59,6 @@ router.post('/update', function(req, res){
 });
 
 router.post('/delete', function(req, res){
-	console.log(req.body);
 	let note_id = req.body['form_id'];
 
 	let Conn = new db.Database(dbPath);

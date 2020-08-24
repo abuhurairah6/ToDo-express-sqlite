@@ -12,7 +12,6 @@ router.use(function(req, res, next) {
 });
 
 router.post('/register', function(req, res) {
-	console.log(req.body);
 	let user_id = req.body['register-username'].toUpperCase();
 	let user_password = req.body['register-password'];
 
@@ -24,11 +23,11 @@ router.post('/register', function(req, res) {
 
 	Conn.read(sqlRead, function(data) {
 		if (data['res'][0]['RES'] == 0) {
+			Conn.close();
 			return res.json({authenticate: false, status: '02'});
 		}
 
 		Conn.dml(sqlInsert, function(data) {
-			Conn.close();
 
 			if (data['err'].length == 0) {
 				session.createSession(user_id, function(token) {
@@ -47,16 +46,14 @@ router.post('/register', function(req, res) {
 });
 
 router.post('/authenticate', function(req, res) {
-	console.log(req.body);
-
 	let user_id = req.body['login-username'].toUpperCase();
 	let user_password = req.body['login-password'];
 	
 	let Conn = new db.Database(dbPath);
-	let sql = 'SELECT USER_PASSWORD FROM SYS_USER WHERE USER_USERID = ?';
+	let sql = 'SELECT USER_ID, USER_PASSWORD FROM SYS_USER WHERE USER_USERID = ?';
+	let sqlUpdate = 'UPDATE SYS_USER SET USER_LAST_LOGIN_DATE = DATETIME("now", "localtime") WHERE USER_USERID = ?';
 
 	Conn.read(sql, function(data) {
-		Conn.close();
 		let ret = false;
 		let status = '';
 
@@ -72,18 +69,42 @@ router.post('/authenticate', function(req, res) {
 		}
 
 		if (ret) {
-			session.createSession(user_id, function(token) {
-				res.cookie('tdtoken', token);
-				// res.redirect('/');
-				return res.json({authenticate: ret, status: status});
-			});
+			Conn.dml(sqlUpdate, function() {
+				Conn.close();
+				
+				session.createSession(data['res'][0]['USER_ID'], function(token) {
+					res.cookie('tdtoken', token, {maxAge: 24 * 60 * 60 * 1000}); // 1 day expiry
+					// res.redirect('/');
+					return res.json({authenticate: ret, status: status});
+				});
+			}, [user_id]);
+
 		} else {
+			Conn.close();
 			// res.redirect('/login');
 			return res.json({authenticate: ret, status: status});
 		}
 		
 
 	}, [user_id]);
+});
+
+router.post('/logout', function(req, res) {
+	let token = req.cookies.tdtoken;
+	let status = '';
+	let unauth = false;
+
+	session.revokeAuth(token, function(ret) {
+		if (ret['err'].length == 0) {
+			status = '01';
+			unauth = true;
+		} else {
+			status = '11';
+		}
+
+		res.clearCookie('tdtoken');
+		return res.json({unauth: unauth, status: status});
+	});
 });
 
 module.exports = router;

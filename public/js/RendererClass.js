@@ -102,4 +102,9 @@ class RendererClass {
 		elem.className = elem.className + ' custom-element-remove';
 	}
 
+	updateUser(userid) {
+		let elem = document.getElementById('header-user');
+
+		elem.innerHTML = 'HI ' + userid;
+	}
 }

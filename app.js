@@ -22,6 +22,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 session.initSession();
 
+// Logging
+app.use(function(req, res, next) {
+	console.log('Requesting to: ' + req.url + '; Method: ' + req.method + '; Query: ' + JSON.stringify(req.query) + '; Body: ' + JSON.stringify(req.body));
+	// session.logSession();
+	next();
+});
+
 app.use('/login', function(req, res, next) {
 	let token = req.cookies.tdtoken;
 	session.verifyAuth(token, function(data, ret) {
@@ -38,8 +45,6 @@ app.use('/login', express.static(__dirname + '/login'));
 app.use('/user', user);
 
 app.use(function(req, res, next) {
-	// session.logSession();
-
 	let token = req.cookies.tdtoken;
 	session.verifyAuth(token, function(data, ret) {
 		if (!ret) {

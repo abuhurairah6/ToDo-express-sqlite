@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="/styles.css">
     </head>
 
-    <body class="border">
+    <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         
         <div id="modal-note" class="modal fade" tabindex="-1" role="dialog">
@@ -56,11 +56,13 @@
 
         <div id="root">
             
-            <div id="header" class="container border">
-                <p>Header</p>
+            <div id="header" class="container-fluid d-flex justify-content-end align-items-center m-1">
+                <i class="fas fa-user-circle fa-2x m-1"></i>
+                <div id="header-user" class="m-1"></div>
+                <button type="button" class="btn btn-light m-1" onclick="Processor.logout()">LOGOUT</button>
             </div>
 
-            <div id="content" class="container border">
+            <div id="content" class="container border p-1">
                 <ul class="list-group" id='content-main'>
                     <li class="list-group-item d-flex justify-content-center align-items-center custom-hover-add" id="note-add" data-toggle="modal" data-target="#modal-note" onclick="Renderer.populateModal('create')">
                         <i class="fas fa-plus"></i>
@@ -68,13 +70,11 @@
                 </ul>
             </div>
 
-            <div id="history" class="container border">
+            <div id="history" class="container border p-1">
                 <ul class="list-group" id='history-main'></ul>
             </div>
 
-            <div id="footer" class="container border">
-                <p>Footer</p>
-            </div>
+            <div id="footer" class="container-fluid p-1"></div>
 
         </div>
 
