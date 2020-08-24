@@ -7,7 +7,7 @@ const app = express();
 // Modules used
 const memory = require('./api/Database');
 const router = require('./api/router');
-const session = require('./api/session');
+const session = require('./server/session');
 const user = require('./api/user');
 
 // Constant configuration
@@ -41,7 +41,8 @@ app.use('/login', function(req, res, next) {
 });
 
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
-app.use('/login', express.static(__dirname + '/login'));
+app.use('/util', express.static(__dirname + '/public/_util'));
+app.use('/login', express.static(__dirname + '/public/login'));
 app.use('/user', user);
 
 app.use(function(req, res, next) {
@@ -56,11 +57,11 @@ app.use(function(req, res, next) {
 	});
 });
 
-app.use('/', express.static(__dirname + '/public'));
+app.use('/main', express.static(__dirname + '/public/main'));
 app.use('/api', router);
 
 app.get('/*', function(req,res){
-	res.redirect('/');
+	res.redirect('/main');
 });
 
 app.post('/*', function(req, res) {

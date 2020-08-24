@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 
-const session = require('./session');
+const session = require('../server/session');
 const db = require('./Database');
 const dbPath = './api/db/ToDo.db';
 

@@ -13,7 +13,7 @@ class RendererClass {
 		} else if (mode == 'update' && id !== null) {
 			let elem = document.getElementById(id);
 
-			form_msg.value = elem.childNodes[0].innerHTML;
+			form_msg.value = elem.childNodes[1].innerHTML;
 			form_weight.value = elem.attributes.weight;
 			form_submit.innerHTML = 'Update Note';
 			form_main.action = `updateNote?${id}`;

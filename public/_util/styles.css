@@ -55,3 +55,7 @@
 	border-color: #90EE90;
 	cursor: pointer;
 }
+
+.custom-auth{
+	height: 100vh;
+}
