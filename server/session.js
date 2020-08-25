@@ -27,6 +27,14 @@ function createSession(userid, callback) {
 	}, [userid, tokenHashed]);
 }
 
+function clearExpiredSession(callback) {
+	let sqlDelete = 'DELETE FROM SYS_SESSION WHERE SESS_EXPIRY_DATE < DATETIME("NOW", "localtime")';
+
+	MEMORY.dml(sqlDelete, function(data) {
+		callback(data);
+	});
+}
+
 function verifyAuth(token, callback) {
 	let sqlSelect = 'SELECT SESS_USERID, SESS_TOKEN FROM SYS_SESSION';
 
@@ -36,6 +44,7 @@ function verifyAuth(token, callback) {
 		for (let i = 0; i < data['res'].length; i++) {
 			if (bcrypt.compareSync(String(token), data['res'][i]['SESS_TOKEN'])) {
 				ret = true;
+				data = data['res'][i];
 				break;
 			}
 		} 
@@ -63,11 +72,11 @@ function revokeAuth(token, callback) {
 	});
 }
 
-
 module.exports = {
 	initSession: initSession,
 	logSession: logSession,
 	createSession: createSession,
+	clearExpiredSession: clearExpiredSession,
 	verifyAuth: verifyAuth,
 	revokeAuth: revokeAuth
 }

@@ -24,10 +24,6 @@
 	animation: remove var(--anim-seconds);
 }
 
-.custom-input{
-	height: 5em;
-}
-
 .custom-hover-icon{
 	transition: var(--trans-seconds);
 	/*border-style: solid;*/

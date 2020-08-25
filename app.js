@@ -2,6 +2,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
+const cron = require('node-cron');
 const app = express();
 
 // Modules used
@@ -20,12 +21,17 @@ global.SALTROUNDS = 10;
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+cron.schedule('01 00 * * *', function() {
+	session.clearExpiredSession(function(data) {
+		// console.log(data);
+	});
+	session.logSession();
+});
 session.initSession();
 
 // Logging
 app.use(function(req, res, next) {
-	console.log('Requesting to: ' + req.url + '; Method: ' + req.method + '; Query: ' + JSON.stringify(req.query) + '; Body: ' + JSON.stringify(req.body));
-	// session.logSession();
+	// console.log('Requesting to: ' + req.url + '; Method: ' + req.method + '; Query: ' + JSON.stringify(req.query) + '; Body: ' + JSON.stringify(req.body));
 	next();
 });
 
@@ -51,7 +57,7 @@ app.use(function(req, res, next) {
 		if (!ret) {
 			res.redirect('/login');
 		} else {
-			req.body['sess_userid'] = data['res'][0]['SESS_USERID'];
+			req.body['sess_userid'] = data['SESS_USERID'];
 			next();
 		}
 	});

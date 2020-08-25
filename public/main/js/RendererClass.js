@@ -7,14 +7,14 @@ class RendererClass {
 
 		if (mode == 'create') {
 			form_msg.value = null;
-			form_weight.value = null;
+			// form_weight.value = null;
 			form_submit.innerHTML = 'Create Note';
 			form_main.action = 'createNote?';
 		} else if (mode == 'update' && id !== null) {
 			let elem = document.getElementById(id);
 
 			form_msg.value = elem.childNodes[1].innerHTML;
-			form_weight.value = elem.attributes.weight;
+			// form_weight.value = elem.attributes.weight;
 			form_submit.innerHTML = 'Update Note';
 			form_main.action = `updateNote?${id}`;
 		}
@@ -29,6 +29,7 @@ class RendererClass {
 		parent.attributes.weight = json['NOTE_WGT'];
 		parent.attributes.actv = json['NOTE_ACTV'];
 		
+		let noteWrapper = document.createElement('del');
 		let note = document.createTextNode(json['NOTE_MSG']);
 
 		let divLeft = document.createElement('label');
@@ -55,21 +56,27 @@ class RendererClass {
 		elemDelete.setAttribute('onclick', `Processor.deleteNote('${parent.id}')`);
 
 		divLeft.appendChild(elemCheck);
-		divCenter.appendChild(note);
 		divRight.appendChild(elemEdit);
 		divRight.appendChild(elemDelete);
-		
-		parent.appendChild(divLeft);
-		parent.appendChild(divCenter);
-		parent.appendChild(divRight);
 
 		let root = document.getElementById('note-add');
 
 		if (json['NOTE_ACTV'] === 'Y') {
+			divCenter.appendChild(note);
+			parent.appendChild(divLeft);
+			parent.appendChild(divCenter);
+			parent.appendChild(divRight);
+
 			parent.className = parentClass + ' list-group-item-primary';
 			divCenter.className = centerClass;
 			document.getElementById('content-main').insertBefore(parent, root);
 		} else {
+			noteWrapper.appendChild(note);
+			divCenter.appendChild(noteWrapper);
+			parent.appendChild(divLeft);
+			parent.appendChild(divCenter);
+			parent.appendChild(divRight);
+
 			parent.className = parentClass + ' list-group-item-success';
 			divCenter.className = centerClass + ' text-muted';
 			elemCheck.setAttribute('checked', '');

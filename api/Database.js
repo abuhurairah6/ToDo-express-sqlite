@@ -7,7 +7,7 @@ class Database {
 			if (err) {
 				console.log(err.message);
 			}else{
-				console.log('Connected to database.');
+				// console.log('Connected to database.');
 			}
 		});
 	}
@@ -17,7 +17,7 @@ class Database {
 			if (err) {
 				console.log(err.message);
 			}else{
-				console.log('Closed database.');
+				// console.log('Closed database.');
 			}
 		});
 	}
