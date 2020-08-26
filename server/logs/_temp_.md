@@ -1,0 +1,1 @@
+To enable include log folder into github as github ignores empty folders and logs folder by default
