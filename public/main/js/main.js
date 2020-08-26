@@ -13,6 +13,7 @@ function main() {
 	form_main.addEventListener("submit", function(e) {
 		// To prevent from redirecting to form action's URL
 		e.preventDefault();
+		e.stopPropagation();
 
 		let func = form_main.action;
 		let regex = /(update|create).*/g;

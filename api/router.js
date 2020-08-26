@@ -1,10 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const { insertLog } = require('./_dblog.js');
 const db = require('./Database');
 const dbPath = './api/db/ToDo.db';
 
 router.use(function(req, res, next) {
 	// res.setHeader('Access-Control-Allow-Origin', '3000');
+	let proc = req.url.replace('/', '').toUpperCase();
+	if (proc == '') {
+		proc = 'QUERY';
+	}
+	
+	insertLog('API', proc, JSON.stringify(req.body));
 	next();
 });
 

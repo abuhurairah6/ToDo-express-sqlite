@@ -10,10 +10,10 @@ const dbPath = './api/db/ToDo.db';
 router.use(function(req, res, next) {
 	// res.setHeader('Access-Control-Allow-Origin', '3000');
 	let proc = req.url.replace('/', '').toUpperCase();
-	let user_id = req.body['login-username'] ? req.body['login-username'].toUpperCase() : '';
-	let token = req.cookies.tdtoken ? req.cookies.tdtoken : '';
+	let user_id = req.body['login-username'] ? req.body['login-username'].toUpperCase() : '<>';
+	let token = req.cookies.tdtoken ? req.cookies.tdtoken : '<>';
 
-	insertLog('AUTH', proc, 'USER: ' + user_id + 'Token: ' + token);
+	insertLog('AUTH', proc, 'USER: ' + user_id + ' Token: ' + token);
 	next();
 });
 

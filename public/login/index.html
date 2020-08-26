@@ -40,7 +40,7 @@
 
 
             <div class="tab-content">
-                <form class="tab-pane fade show active" id="form-login" method="post" action="/user/authenticate">
+                <form class="tab-pane fade show active" id="form-login">
 
                     <div id="content" class="container border d-flex flex-column align-items-center p-3">
                         <input id="login-username" name="login-username" class="m-1 form-control" placeholder="Username" required></input>
@@ -52,7 +52,7 @@
 
                 </form>
 
-                <form class="tab-pane fade" id="form-register" method="post" action="/user/register">
+                <form class="tab-pane fade" id="form-register">
                     
                     <div id="content" class="container border d-flex flex-column align-items-center p-3">
                         <input id="register-username" name="register-username" class="m-1 form-control" placeholder="Username" required></input>
@@ -81,6 +81,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
 <script type="text/javascript" src="/node_modules/@fortawesome/fontawesome-free/js/all.js"></script>
+<script type="text/javascript" src="/util/loadButton.js"></script>
 <script type="text/javascript" src="/login/js/ErrorHandlerClass.js"></script>
 <script type="text/javascript" src="/login/js/main.js"></script>
 

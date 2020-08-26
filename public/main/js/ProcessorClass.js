@@ -18,15 +18,15 @@ class ProcessorClass {
 	createNote() {
 		let form_main = document.getElementById('form-note');
 		let form_msg = document.getElementById('form-note-msg');
-		let form_weight = document.getElementById('form-note-weight');
+		// let form_weight = document.getElementById('form-note-weight');
 		let form_submit = document.getElementById('form-note-submit');
 		
 		$.ajax({
 			type: 'POST',
 			url: '/api/insert',
 			data: {
-				'form_msg': form_msg.value,
-				'form_weight': form_weight.value
+				'form_msg': form_msg.value
+				// 'form_weight': form_weight.value
 			},
 			success: function(res, status, xhr) {
 				for (let i = 0; i <= res.length - 1; i++) {
@@ -43,7 +43,7 @@ class ProcessorClass {
 	updateNote(id, form = true) {
 		let form_id = id.split('-')[2];
 		let form_msg = form ? document.getElementById('form-note-msg').value : document.getElementById(id).attributes.msg;
-		let form_weight = form ? document.getElementById('form-note-weight').value : document.getElementById(id).attributes.weight;
+		// let form_weight = form ? document.getElementById('form-note-weight').value : document.getElementById(id).attributes.weight;
 		let form_actv = form ? 'Y': document.getElementById(id).attributes.actv === 'Y' ? 'N' : 'Y';
 		
 		$.ajax({
@@ -52,7 +52,7 @@ class ProcessorClass {
 			data: {
 				'form_id': form_id,
 				'form_msg': form_msg,
-				'form_weight': form_weight,
+				// 'form_weight': form_weight,
 				'form_actv': form_actv
 			},
 			success: function(res, status, xhr) {
@@ -85,6 +85,9 @@ class ProcessorClass {
 	}
 
 	logout() {
+		let btn = document.getElementById('logout-submit');
+		renderLoading(btn);
+
 		$.ajax({
 			type: 'POST',
 			url: '/user/logout',
@@ -93,10 +96,12 @@ class ProcessorClass {
 					window.location = window.pathname;
 				} else {
 					console.log(res.status);
+					renderReset(btn, 'LOGOUT');
 				}
 			},
 			error: function(xhr, status, error){
 				console.log(error);
+				renderReset(btn, 'LOGOUT');
 			}
 	    });
 	}
