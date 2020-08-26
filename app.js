@@ -15,7 +15,7 @@ const session = require('./server/session');
 
 // Constant configuration
 const memDbPath = ':memory:';
-const port = 3000;
+const port = process.env.PORT ? process.env.PORT : 3000;
 
 global.logFilePath = __dirname + '/server/logs/';
 global.MEMORY = new memory.Database(memDbPath);
@@ -26,9 +26,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 cron.schedule('01 00 * * *', function() {
-	session.createSessionLog();
+	// session.createSessionLog();
 	session.deleteExpiredSession();
-	session.deleteSessionLog();
+	// session.deleteSessionLog();
 	dblog.deleteLog();
 });
 
@@ -79,6 +79,4 @@ app.post('/*', function(req, res) {
 	res.sendStatus(404);
 });
 
-app.listen(port, function() {
-	console.log(`Listening in port ${port}`);
-});
+app.listen(port);
