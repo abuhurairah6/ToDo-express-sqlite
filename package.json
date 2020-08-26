@@ -4,14 +4,13 @@
   "description": "To Do List/Post-It-Notes",
   "main": "app.js",
   "scripts": {
-    "start": "node ./",
+    "start": "node ./app.js",
     "dev": "nodemon ./app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "node-cron": "^2.0.3",
     "nodemon": "^2.0.4"
   },
   "dependencies": {
@@ -20,6 +19,7 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "node-cron": "^2.0.3",
     "sqlite3": "^5.0.0"
   }
 }

@@ -12,7 +12,7 @@ function insertLog(cat, proc, desc) {
 
 function deleteLog() {
 	let Conn = new db.Database(dbPath);
-	let sqlInsert = 'DELETE FROM SYS_LOG WHERE LOG_DATETIME < DATETIME("NOW", "localtime", "+7 days")';
+	let sqlInsert = 'DELETE FROM SYS_LOG WHERE LOG_DATETIME < DATETIME("NOW", "localtime", "-7 days")';
 
 	insertLog('SYS', 'PURGE', '<>');
 

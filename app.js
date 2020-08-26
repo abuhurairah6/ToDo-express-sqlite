@@ -26,8 +26,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 cron.schedule('01 00 * * *', function() {
-	session.deleteExpiredSession();
 	session.createSessionLog();
+	session.deleteExpiredSession();
 	session.deleteSessionLog();
 	dblog.deleteLog();
 });
