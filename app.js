@@ -1,4 +1,5 @@
 // Dependencies required
+const fs = require('fs');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -6,15 +7,17 @@ const cron = require('node-cron');
 const app = express();
 
 // Modules used
+const dblog = require('./api/_dblog.js');
 const memory = require('./api/Database');
 const router = require('./api/router');
-const session = require('./server/session');
 const user = require('./api/user');
+const session = require('./server/session');
 
 // Constant configuration
 const memDbPath = ':memory:';
 const port = 3000;
 
+global.logFilePath = __dirname + '/server/logs/';
 global.MEMORY = new memory.Database(memDbPath);
 global.SALTROUNDS = 10;
 
@@ -23,10 +26,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 cron.schedule('01 00 * * *', function() {
-	session.clearExpiredSession(function(data) {
-		// console.log(data);
-	});
-	session.logSession();
+	session.deleteExpiredSession();
+	session.createSessionLog();
+	session.deleteSessionLog();
+	dblog.deleteLog();
 });
 
 session.initSession();

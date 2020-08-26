@@ -3,11 +3,17 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 
 const session = require('../server/session');
+const { insertLog } = require('./_dblog.js');
 const db = require('./Database');
 const dbPath = './api/db/ToDo.db';
 
 router.use(function(req, res, next) {
 	// res.setHeader('Access-Control-Allow-Origin', '3000');
+	let proc = req.url.replace('/', '').toUpperCase();
+	let user_id = req.body['login-username'] ? req.body['login-username'].toUpperCase() : '';
+	let token = req.cookies.tdtoken ? req.cookies.tdtoken : '';
+
+	insertLog('AUTH', proc, 'USER: ' + user_id + 'Token: ' + token);
 	next();
 });
 
@@ -31,7 +37,7 @@ router.post('/register', function(req, res) {
 
 			if (data['err'].length == 0) {
 				session.createSession(user_id, function(token) {
-					res.cookie('tdtoken', token);
+					res.cookie('tdtoken', token, {maxAge: 24 * 60 * 60 * 1000}); // 1 day expiry
 					// res.redirect('/');
 					return res.json({authenticate: true, status: '01'});
 				});

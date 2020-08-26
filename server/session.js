@@ -10,7 +10,23 @@ function initSession(callback = function() {}) {
 	});
 }
 
-function logSession() {
+function createSession(userid, callback) {
+	let sqlInsert = 'INSERT INTO SYS_SESSION (SESS_USERID, SESS_TOKEN) VALUES (?, ?)';
+	let token = bcrypt.hashSync(String(Math.random()), SALTROUNDS);
+	tokenHashed = bcrypt.hashSync(token, SALTROUNDS);
+
+	MEMORY.dml(sqlInsert, function(data) {
+		callback(token);
+	}, [userid, tokenHashed]);
+}
+
+function deleteExpiredSession() {
+	let sqlDelete = 'DELETE FROM SYS_SESSION WHERE SESS_EXPIRY_DATE < DATETIME("NOW", "localtime")';
+
+	MEMORY.dml(sqlDelete, function(data) {});
+}
+
+function createSessionLog() {
 	let sqlSelect = 'SELECT * FROM SYS_SESSION';
 
 	MEMORY.read(sqlSelect, function(data) {
@@ -22,27 +38,27 @@ function logSession() {
 			content[i] = data['res'][i];
 		}
 
-		fs.appendFile(__dirname + '/logs/' + filename, JSON.stringify(content) + EOL, function(err) {
-			// console.log(err);
+		fs.appendFile(logFilePath + filename, JSON.stringify(content) + EOL, function(err) {
+			// console.log('Created: ' + logFilePath + filename);
 		});
 	})
 }
 
-function createSession(userid, callback) {
-	let sqlInsert = 'INSERT INTO SYS_SESSION (SESS_USERID, SESS_TOKEN) VALUES (?, ?)';
-	let token = bcrypt.hashSync(String(Math.random()), SALTROUNDS);
-	tokenHashed = bcrypt.hashSync(token, SALTROUNDS);
+function deleteSessionLog() {
+	fs.readdir(logFilePath, function(err, files) {
+		for (let i = 0; i < files.length; i++) {
+			fs.stat(logFilePath + files[i], function(err, stats) {
+				let now = (new Date()).getTime();
+				let ctime = stats.birthtimeMs +  (7 * 24 * 60 * 60 * 1000);
+				// let ctime = stats.birthtimeMs + (1.5 * 60 * 1000);
 
-	MEMORY.dml(sqlInsert, function(data) {
-		callback(token);
-	}, [userid, tokenHashed]);
-}
-
-function clearExpiredSession(callback) {
-	let sqlDelete = 'DELETE FROM SYS_SESSION WHERE SESS_EXPIRY_DATE < DATETIME("NOW", "localtime")';
-
-	MEMORY.dml(sqlDelete, function(data) {
-		callback(data);
+				if (ctime < now) {
+					fs.unlink(logFilePath + files[i], function(err) {
+						// console.log('Deleted: ' + logFilePath + files[i]);
+					});
+				}
+			});
+		}
 	});
 }
 
@@ -85,9 +101,10 @@ function revokeAuth(token, callback) {
 
 module.exports = {
 	initSession: initSession,
-	logSession: logSession,
+	createSessionLog: createSessionLog,
 	createSession: createSession,
-	clearExpiredSession: clearExpiredSession,
+	deleteExpiredSession: deleteExpiredSession,
+	deleteSessionLog: deleteSessionLog,
 	verifyAuth: verifyAuth,
 	revokeAuth: revokeAuth
 }
