@@ -21,12 +21,14 @@ global.SALTROUNDS = 10;
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
 cron.schedule('01 00 * * *', function() {
 	session.clearExpiredSession(function(data) {
 		// console.log(data);
 	});
 	session.logSession();
 });
+
 session.initSession();
 
 // Logging

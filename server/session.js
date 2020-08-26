@@ -1,4 +1,6 @@
+const fs = require('fs');
 const bcrypt = require('bcrypt');
+const { EOL } = require('os');
 
 function initSession(callback = function() {}) {
 	let sql = "CREATE TABLE IF NOT EXISTS SYS_SESSION (SESS_ID INTEGER PRIMARY KEY, SESS_USERID INTEGER NOT NULL, SESS_TOKEN TEXT NOT NULL, SESS_ISSUED_DATE DATE NOT NULL DEFAULT (DATETIME('now', 'localtime')), SESS_EXPIRY_DATE DATE NOT NULL DEFAULT (DATETIME('now', 'localtime', '+1 days')))";
@@ -12,8 +14,17 @@ function logSession() {
 	let sqlSelect = 'SELECT * FROM SYS_SESSION';
 
 	MEMORY.read(sqlSelect, function(data) {
-		console.log('Session available =>');
-		console.log(data['res']);
+		let [ month, day, year ] = (new Date()).toLocaleDateString().split('/');
+		let filename = 'session_' + year + '_' + month + '_' + day + '.log';
+		let content = {};
+
+		for (let i = 0; i < data['res'].length; i++) {
+			content[i] = data['res'][i];
+		}
+
+		fs.appendFile(__dirname + '/logs/' + filename, JSON.stringify(content) + EOL, function(err) {
+			// console.log(err);
+		});
 	})
 }
 
