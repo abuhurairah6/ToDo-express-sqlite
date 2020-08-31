@@ -72,13 +72,12 @@ class RendererClass {
 			document.getElementById('content-main').insertBefore(parent, root);
 		} else {
 			noteWrapper.appendChild(note);
-			divCenter.appendChild(noteWrapper);
 			parent.appendChild(divLeft);
-			parent.appendChild(divCenter);
+			parent.appendChild(noteWrapper);
 			parent.appendChild(divRight);
 
 			parent.className = parentClass + ' list-group-item-success';
-			divCenter.className = centerClass + ' text-muted';
+			noteWrapper.className = centerClass + ' text-muted';
 			elemCheck.setAttribute('checked', '');
 			document.getElementById('history-main').appendChild(parent);
 		}

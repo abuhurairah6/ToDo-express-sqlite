@@ -2,27 +2,30 @@ const SQLITE3 = require('sqlite3').verbose();
 
 class Database {
 	constructor(path) {
+		this.path = path;
+		this.db = {};
+	}
+
+	open() {
 		// Init database
-		this.db = new SQLITE3.Database(path, SQLITE3.OPEN_READWRITE, function(err) {
-			if (err) {
-				console.log(err.message);
-			}else{
-				// console.log('Connected to database.');
-			}
+		return new Promise ((resolve, reject) => {
+			this.db = new SQLITE3.Database(this.path, SQLITE3.OPEN_READWRITE, function(err) {
+				if (err) {
+					console.log(err.message);
+				}else{
+					resolve('Connected to database.');
+				}
+			});
 		});
 	}
 
 	close() {
-		this.db.close(function(err) {
-			if (err) {
-				console.log(err.message);
-			}else{
-				// console.log('Closed database.');
-			}
+		return new Promise((resolve, reject) => {
+			this.db.close();
 		});
 	}
 
-	read(sql, callback, params = []) {
+	read(sql, params = []) {
 		// Query data using each(), first callback (third argument) appends all rows into variable,
 		// second callback (fourth argument) returns and calls initial callback function after all rows queried.
 
@@ -31,14 +34,16 @@ class Database {
 			err: []
 		};
 
-		this.db.each(sql, params, function(err, rows) {
-			if (err) {
-				data['err'].push(err);
-			}else {
-				data['res'].push(rows);
-			}
-		}, function() {
-			callback(data);
+		return new Promise((resolve, reject) => {
+			this.db.each(sql, params, function(err, rows) {
+				if (err) {
+					data['err'].push(err);
+				}else {
+					data['res'].push(rows);
+				}
+			}, () => {
+				resolve(data);
+			});			
 		});
 
 		/*
@@ -55,19 +60,21 @@ class Database {
 		*/
 	}
 
-	dml(sql, callback, params = []) {
+	dml(sql, params = []) {
 		let data = {
 			res: [],
 			err: []
 		};
 
-		this.db.run(sql, params, function(err) {
-			if (err) {
-				data['err'].push(err);
-			}else {
-				data['res'].push(200);
-			}
-			callback(data);
+		return new Promise ((resolve, reject) => {
+			this.db.run(sql, params, function(err) {
+				if (err) {
+					data['err'].push(err);
+				}else {
+					data['res'].push(200);
+				}
+				resolve(data);
+			});
 		});
 	}
 }

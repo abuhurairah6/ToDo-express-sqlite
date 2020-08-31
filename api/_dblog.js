@@ -1,24 +1,26 @@
 const db = require('./Database');
 const dbPath = './api/db/ToDo.db';
 
-function insertLog(cat, proc, desc) {
+async function insertLog(cat, proc, desc) {
 	let Conn = new db.Database(dbPath);
-	let sqlInsert = 'INSERT INTO SYS_LOG (LOG_CAT, LOG_PROC, LOG_DESC) VALUES (?, ?, ?)';
+	await Conn.open();
 
-	Conn.dml(sqlInsert, function(data) {
-		Conn.close();
-	}, [cat, proc, desc]);
+	let sqlInsert = 'INSERT INTO SYS_LOG (LOG_CAT, LOG_PROC, LOG_DESC) VALUES (?, ?, ?)';
+	await Conn.dml(sqlInsert, [cat, proc, desc]);
+	
+	Conn.close();
 }
 
-function deleteLog() {
+async function deleteLog() {
 	let Conn = new db.Database(dbPath);
+	await Conn.open();
+
 	let sqlInsert = 'DELETE FROM SYS_LOG WHERE LOG_DATETIME < DATETIME("NOW", "localtime", "-7 days")';
 
 	insertLog('SYS', 'PURGE', '<>');
-
-	Conn.dml(sqlInsert, function(data) {
-		Conn.close();
-	});	
+	await Conn.dml(sqlInsert);
+	
+	Conn.close();
 }
 
 module.exports = {
