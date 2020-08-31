@@ -7,16 +7,16 @@ const cron = require('node-cron');
 const app = express();
 
 // Modules used
-const dblog = require('./api/_dblog.js');
+const dblog = require('./api/_dblog');
 const memory = require('./api/Database');
 const router = require('./api/router');
 const user = require('./api/user');
 const session = require('./server/session');
 
 // Constant configuration
-const memDbPath = ':memory:';
 const port = process.env.PORT ? process.env.PORT : 3000;
 
+global.memDbPath = ':memory:';
 global.logFilePath = __dirname + '/server/logs/';
 global.MEMORY = new memory.Database(memDbPath);
 global.SALTROUNDS = 10;
@@ -27,9 +27,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 cron.schedule('01 00 * * *', function() {
 	// session.createSessionLog();
-	session.deleteExpiredSession();
+	// session.deleteExpiredSession();
 	// session.deleteSessionLog();
-	dblog.deleteLog();
+	// dblog.deleteLog();
 });
 
 session.initSession();
@@ -40,15 +40,16 @@ app.use(function(req, res, next) {
 	next();
 });
 
-app.use('/login', function(req, res, next) {
+app.use('/login', async(req, res, next) => {
 	let token = req.cookies.tdtoken;
-	session.verifyAuth(token, function(data, ret) {
-		if (ret) {
-			res.redirect('/');
-		} else {
-			next();
-		}
-	});
+	let data = await session.verifyAuth(token);
+	let ret = res[1];
+
+	if (ret) {
+		res.redirect('/');
+	} else {
+		next();
+	}
 });
 
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
@@ -56,16 +57,20 @@ app.use('/util', express.static(__dirname + '/public/_util'));
 app.use('/login', express.static(__dirname + '/public/login'));
 app.use('/user', user);
 
-app.use(function(req, res, next) {
+app.use(async(req, res, next) => {
+
 	let token = req.cookies.tdtoken;
-	session.verifyAuth(token, function(data, ret) {
-		if (!ret) {
-			res.redirect('/login');
-		} else {
-			req.body['sess_userid'] = data['SESS_USERID'];
-			next();
-		}
-	});
+	let data = await session.verifyAuth(token);
+
+	let userid = data[0];
+	let ret = data[1];
+
+	if (!ret) {
+		res.redirect('/login');
+	} else {
+		req.body['sess_userid'] = userid['SESS_USERID'];
+		next();
+	}
 });
 
 app.use('/main', express.static(__dirname + '/public/main'));
